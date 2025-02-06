@@ -63,7 +63,7 @@ app.title = "麻雀スコアダッシュボード"
 
 # --- 静的画像の配信用ルート ---
 # ※ 画像フォルダのパスはご利用環境に合わせて調整してください
-IMAGE_FOLDER = r"S:\dash\dash\m\figre"
+IMAGE_FOLDER = r"figre"
 
 @app.server.route('/figre/<path:filename>')
 def serve_figure(filename):
