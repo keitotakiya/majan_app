@@ -477,4 +477,6 @@ def update_summary_table(start_date, end_date):
 # 8) アプリ実行
 # ==============================
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    # app.run_server(debug=True)
+    port = int(os.environ.get("PORT", 8050))  # Render などのクラウドサービスでは PORT 環境変数が設定される
+    app.run_server(host='0.0.0.0', port=port, debug=True)
