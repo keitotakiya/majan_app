@@ -55,15 +55,18 @@ bapp_df = pd.read_csv(BAPP_FILE)
 bapp_dict = bapp_df.loc[0].to_dict()
 
 # ==============================
-# 2) Dash アプリ設定
+# 2) Dash アプリ設定（meta_tags でレスポンシブ対応）
 # ==============================
-# Bootstrapテーマは利用しつつ、個別に配色を上書き
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+app = dash.Dash(
+    __name__, 
+    external_stylesheets=[dbc.themes.DARKLY],
+    meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}]
+)
 app.title = "麻雀スコアダッシュボード"
 
 # --- 静的画像の配信用ルート ---
 # ※ 画像フォルダのパスはご利用環境に合わせて調整してください
-IMAGE_FOLDER = r"figre"
+IMAGE_FOLDER = r"S:\dash\dash\m\figre"
 
 @app.server.route('/figre/<path:filename>')
 def serve_figure(filename):
@@ -105,7 +108,7 @@ app.layout = dbc.Container(
                             display_format="YYYY-MM-DD",
                             className="mx-auto"
                         ),
-                        width=6
+                        xs=12, sm=6  # 幅は画面サイズに合わせる
                     ),
                     justify="center",
                     className="mt-3"
@@ -152,14 +155,22 @@ app.layout = dbc.Container(
                             value="Score",
                             clearable=False,
                         ),
-                        dcc.Graph(id="score-graph", style={"height": "300px"}),
-                    ], width=6),
+                        dcc.Graph(
+                            id="score-graph", 
+                            config={'displayModeBar': False},  # モードバー非表示
+                            style={"height": "300px"}
+                        ),
+                    ], xs=12, sm=6),
                     dbc.Col([
                         html.H4("日付ごとの累積ウマアリスコア", className="text-center", style={"color": DARK_GREEN}),
                         # 左側にドロップダウンなどがあるため、右側のグラフ上部に同等の高さのスペーサーを挿入
                         html.Div(style={"height": "55px"}),
-                        dcc.Graph(id="daily-uma-graph", style={"height": "300px"}),
-                    ], width=6),
+                        dcc.Graph(
+                            id="daily-uma-graph", 
+                            config={'displayModeBar': False},  # モードバー非表示
+                            style={"height": "300px"}
+                        ),
+                    ], xs=12, sm=6),
                 ])
             ]),
             className="mb-4 shadow",
@@ -317,15 +328,15 @@ def update_ranking_tables(start_date, end_date):
         dbc.Col([
             html.H5("最高スコアランキング", className="text-center", style={"color": DARK_GREEN}),
             highest_score_table
-        ], width=4),
+        ], xs=12, sm=4),
         dbc.Col([
             html.H5("4着回避率ランキング", className="text-center", style={"color": DARK_GREEN}),
             avoidance_table
-        ], width=4),
+        ], xs=12, sm=4),
         dbc.Col([
             html.H5("Yeeeen", className="text-center", style={"color": DARK_GREEN}),
             uma50_table
-        ], width=4)
+        ], xs=12, sm=4)
     ], className="mb-4")
 
     ranking_section = html.Div([
@@ -450,7 +461,7 @@ def update_summary_table(start_date, end_date):
     )
     desired_order = ["最高スコア", "最低スコア", "平均スコア"] + sorted_rank_rate + ["平均順位", "生スコア合計", "ウマ込み合計", "Yeeeen"]
 
-    # reindex（存在しない指標はNaNになりますが、表示時は空文字などに変換可能です）
+    # reindex（存在しない指標は NaN になりますが、表示時は空文字などに変換可能です）
     combined_pivot = combined_pivot.reindex(desired_order)
 
     # テーブル作成
@@ -484,4 +495,4 @@ def update_summary_table(start_date, end_date):
 if __name__ == "__main__":
     # app.run_server(debug=True)
     port = int(os.environ.get("PORT", 8050))  # Render などのクラウドサービスでは PORT 環境変数が設定される
-    app.run_server(host='0.0.0.0', port=port, debug=True)
+    app.run_server(host='0.0.0.0', port=port, debug=False)
