@@ -241,7 +241,8 @@ def update_ranking_tables(start_date, end_date):
         borderless=True,
         hover=True,
         responsive=True,
-        className="mb-4"
+        className="mb-4",
+        style={"color": "black"}
     )
 
     # ② (a) 最高スコアランキング
@@ -261,7 +262,8 @@ def update_ranking_tables(start_date, end_date):
         borderless=True,
         hover=True,
         responsive=True,
-        className="mb-2"
+        className="mb-2",
+        style={"color": "black"}
     )
 
     # ② (b) 4着回避率ランキング
@@ -285,7 +287,8 @@ def update_ranking_tables(start_date, end_date):
         borderless=True,
         hover=True,
         responsive=True,
-        className="mb-2"
+        className="mb-2",
+        style={"color": "black"}
     )
 
     # ② (c) Yeeeen
@@ -306,7 +309,8 @@ def update_ranking_tables(start_date, end_date):
         borderless=True,
         hover=True,
         responsive=True,
-        className="mb-2"
+        className="mb-2",
+        style={"color": "black"}
     )
 
     three_rankings_row = dbc.Row([
@@ -469,7 +473,8 @@ def update_summary_table(start_date, end_date):
         table_header + table_body,
         borderless=True,
         hover=True,
-        responsive=True
+        responsive=True,
+        style={"color": "black"}
     )
     return table
 
